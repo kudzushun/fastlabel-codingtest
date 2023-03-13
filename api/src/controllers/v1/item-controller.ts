@@ -16,43 +16,45 @@ import { ItemVO } from "../../types/vo";
 import { ItemCreateParams, ItemUpdateParams } from "../../types/request";
 import { getCustomRepository } from "typeorm";
 import { ItemRepository } from "../../repositories/item-repository";
+import { StatusCodes } from "http-status-codes";
 
 @Route("items")
 @Tags("Item")
 @provideSingleton(ItemController)
 export class ItemController extends Controller {
   private itemRepository = getCustomRepository(ItemRepository);
+  // private validationService = new ValidationService({"ItemCreateParams": {dataType: "refObject", properties: {"content": {dataType: "string"}, isDone: {dataType: "boolean"}}}});
   @inject(ItemService) private itemService: ItemService;
 
   @Get()
-  @SuccessResponse(200, "Return Items")
+  @SuccessResponse(StatusCodes.OK, "Return Items")
   public get(): Promise<ItemVO[]> {
     return this.itemService.get();
   }
 
   @Get("count")
-  @SuccessResponse(200, "Return Item Count")
+  @SuccessResponse(StatusCodes.OK, "Return Item Count")
   public count(@Request() req: any): Promise<number> {
     return this.itemRepository.count();
   }
 
   @Get("{id}")
-  @SuccessResponse(200, "Return Item")
+  @SuccessResponse(StatusCodes.OK, "Return Item")
   public find(@Request() req: any, id: string): Promise<ItemVO> {
     return this.itemService.find(id);
   }
 
   @Post()
-  @SuccessResponse(200, "Return Item")
+  @SuccessResponse(StatusCodes.OK, "Return Item")
   public post(
     @Request() req: any,
-    @Body() params: ItemCreateParams
+    @Body() params: ItemCreateParams,
   ): Promise<ItemVO> {
     return this.itemService.create(params);
   }
 
   @Put("{id}")
-  @SuccessResponse(200, "Return Item")
+  @SuccessResponse(StatusCodes.OK, "Return Item")
   public put(
     @Request() req: any,
     id: string,
@@ -62,7 +64,7 @@ export class ItemController extends Controller {
   }
 
   @Delete("{id}")
-  @SuccessResponse(204, "Succeeded")
+  @SuccessResponse(StatusCodes.NO_CONTENT, "Succeeded")
   public async delete(@Request() req: any, id: string): Promise<void> {
     await this.itemRepository.delete(id);
   }

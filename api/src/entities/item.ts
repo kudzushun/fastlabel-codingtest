@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity({ name: "items" })
+@Entity({ name: "items", engine: "InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci" })
 @Unique("idx_items_order", ["order"])
 export class Item {
   @PrimaryGeneratedColumn("uuid")

@@ -26,7 +26,7 @@ export class ItemRepository extends Repository<Item> {
       if (a.order > b.order) return 1;
       return 0;
     });
-    const results = [] as any;
+    const results: ItemDto[] = [];
     entities.forEach((e) => {
       results.push(ItemDto.fromEntity(e));
     });

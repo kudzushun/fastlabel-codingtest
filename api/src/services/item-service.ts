@@ -9,6 +9,7 @@ import {
   ClientError,
   ClientErrorStatusCodes,
 } from "../middlewares/client-error";
+import { validateContent } from "../validator/contentValidator";
 
 @provideSingleton(ItemService)
 export class ItemService {
@@ -33,6 +34,7 @@ export class ItemService {
   }
 
   async create(params: ItemCreateParams): Promise<ItemVO> {
+    validateContent(params.content);
     const r = this.itemRepository;
     if ((await r.count()) >= 10) {
       throw new ClientError(
@@ -48,11 +50,12 @@ export class ItemService {
   }
 
   async update(id: string, params: ItemUpdateParams): Promise<ItemVO> {
-    const dto = await this.itemRepository.findByIdOrFail(id);
+    const r = this.itemRepository;
+    const dto = await r.findByIdOrFail(id);
     if (params.order) dto.order = params.order;
     if (params.content) dto.content = params.content;
     if (params.isDone !== undefined) dto.isDone = params.isDone;
-    await this.itemRepository.save(dto);
+    await r.save(dto);
     return dto.toVO();
   }
 }

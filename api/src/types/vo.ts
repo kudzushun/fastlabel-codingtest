@@ -1,6 +1,6 @@
 export type ItemVO = {
-  id: string;
-  order: number;
-  content: string;
-  isDone: boolean;
+  readonly id: string;
+  readonly order: number;
+  readonly content: string;
+  readonly isDone: boolean;
 };

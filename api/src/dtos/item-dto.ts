@@ -10,6 +10,7 @@ export class ItemDto {
   updatedAt: Date;
 
   constructor(id: string, order: number, content: string, isDone: boolean) {
+    if(!this.isValidContent(content)) throw new Error("content must be less than 80");
     this.id = id;
     this.order = order;
     this.content = content;
@@ -17,12 +18,7 @@ export class ItemDto {
   }
 
   toEntity = (): Item => {
-    const entity = new Item(this.id, this.order, this.content, this.isDone);
-    entity.id = this.id;
-    entity.order = this.order;
-    entity.content = this.content;
-    entity.isDone = this.isDone;
-    return entity;
+    return new Item(this.id, this.order, this.content, this.isDone);
   };
 
   static fromEntity = (entity: Item): ItemDto => {
@@ -40,7 +36,11 @@ export class ItemDto {
       id: this.id,
       order: this.order,
       content: this.content,
-      isDone: this.isDone,
+      isDone: this.isDone
     };
+  };
+
+  isValidContent = (content: string) => {
+    return content.length <= 80
   };
 }
