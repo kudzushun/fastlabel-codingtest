@@ -23,7 +23,6 @@ import { StatusCodes } from "http-status-codes";
 @provideSingleton(ItemController)
 export class ItemController extends Controller {
   private itemRepository = getCustomRepository(ItemRepository);
-  // private validationService = new ValidationService({"ItemCreateParams": {dataType: "refObject", properties: {"content": {dataType: "string"}, isDone: {dataType: "boolean"}}}});
   @inject(ItemService) private itemService: ItemService;
 
   @Get()
